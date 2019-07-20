@@ -2,13 +2,12 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, Float, String, Date
 
 Base = declarative_base()
-
-
+ 
+ 
 class RaceResult(Base):
     __tablename__ = 'race_result'
-
+ 
     id = Column(Integer, primary_key=True)
-    year = Column(Integer)
     race_num = Column(Integer)
     rank = Column(Integer)
     pitout_lane = Column(Integer)
@@ -21,10 +20,12 @@ class RaceResult(Base):
     shinnyu = Column(Integer)
     start_timing = Column(Float)
     race_time = Column(Float)
+    year = Column(Integer)
     date = Column(Date)
-
+ 
     #def __repr__(self):
     #    return "<Student(id='%s', name='%s', score='%s')>" % (self.id, self.name, self.score)
+
 
 class RacerInfo(Base):
     __tablename__ = 'racer_info'
@@ -35,6 +36,7 @@ class RacerInfo(Base):
     racer_name_kana = Column(String(255))
     branch_prefecture = Column(String(10))
     racer_rank = Column(String(10))
+    racer_rank_int = Column(Integer)
     birth_date = Column(Date)
     #1: male, 2:female
     racer_sex = Column(Integer)
@@ -42,51 +44,54 @@ class RacerInfo(Base):
     racer_height = Column(Integer)
     racer_weight = Column(Integer)
     racer_blood_type = Column(String(5))
-    racer_win_rate = Column(Integer)
-    racer_double_win_rate = Column(Integer)
+    racer_win_rate = Column(Float)
+    racer_double_win_rate = Column(Float)
     racer_first_arrival_times = Column(Integer)
     racer_second_arrival_times = Column(Integer)
     racer_start_times = Column(Integer)
     winner_race_start_times = Column(Integer)
     number_of_win = Column(Integer)
-    average_start_timing = Column(Integer)
+    average_start_timing = Column(Float)
 
     first_course_entry_time = Column(Integer)
-    first_course_double_win_time = Column(Integer)
+    first_course_double_win_rate = Column(Float)
     first_course_average_start_timing = Column(Integer)
-    first_course_average_start_rank = Column(Integer)
+    first_course_average_start_rank = Column(Float)
 
     second_course_entry_time = Column(Integer)
-    second_course_double_win_time = Column(Integer)
+    second_course_double_win_rate = Column(Float)
     second_course_average_start_timing = Column(Integer)
-    second_course_average_start_rank = Column(Integer)
+    second_course_average_start_rank = Column(Float)
 
     third_course_entry_time = Column(Integer)
-    third_course_double_win_time = Column(Integer)
+    third_course_double_win_rate = Column(Float)
     third_course_average_start_timing = Column(Integer)
-    third_course_average_start_rank = Column(Integer)
+    third_course_average_start_rank = Column(Float)
 
     fourth_course_entry_time = Column(Integer)
-    fourth_course_double_win_time = Column(Integer)
+    fourth_course_double_win_rate = Column(Float)
     fourth_course_average_start_timing = Column(Integer)
-    fourth_course_average_start_rank = Column(Integer)
+    fourth_course_average_start_rank = Column(Float)
 
     fifth_course_entry_time = Column(Integer)
-    fifth_course_double_win_time = Column(Integer)
+    fifth_course_double_win_rate = Column(Float)
     fifth_course_average_start_timing = Column(Integer)
-    fifth_course_average_start_rank = Column(Integer)
+    fifth_course_average_start_rank = Column(Float)
 
     sixth_course_entry_time = Column(Integer)
-    sixth_course_double_win_time = Column(Integer)
+    sixth_course_double_win_rate = Column(Float)
     sixth_course_average_start_timing = Column(Integer)
-    sixth_course_average_start_rank = Column(Integer)
+    sixth_course_average_start_rank = Column(Float)
 
-    previous_period_rank = Column(String(10))
-    previous_second_period_rank = Column(String(10))
-    previous_third_period_rank = Column(String(10))
+    previous_period_rank = Column(String)
+    previous_period_rank_int = Column(Integer)
+    previous_second_period_rank = Column(String)
+    previous_second_period_rank_int = Column(Integer)
+    previous_third_period_rank = Column(String)
+    previous_third_period_rank_int = Column(Integer)
 
-    previous_period_capability_index = Column(String(10))
-    this_period_capability_index = Column(String(10))
+    previous_period_capability_index = Column(Float)
+    this_period_capability_index = Column(Float)
 
     year = Column(Integer)
     period = Column(Integer)
@@ -189,4 +194,4 @@ class RacerInfo(Base):
     no_course_k0_times = Column(Integer)
     no_course_k1_times = Column(Integer)
 
-    birth_place = Column(Integer)
+    birth_place = Column(String(10))

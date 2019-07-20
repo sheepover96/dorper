@@ -8,8 +8,9 @@ import glob
 
 from models import Base, RacerInfo
 
-def get_racer_info_list():
-    df = pd.read_csv('dataset/fan1504.csv', encoding="SHIFT_JIS")
+def get_racer_info_list(path):
+    #df = pd.read_csv('dataset/fan1504.csv', encoding="SHIFT_JIS")
+    df = pd.read_csv(path, encoding="SHIFT_JIS")
     racer_info_list = []
     for idx, data_row in enumerate(df.iterrows()):
         try:
@@ -17,7 +18,17 @@ def get_racer_info_list():
             racer_name_kanji = data_row[1][1]
             racer_name_kana = data_row[1][2].rstrip()
             branch_prefecture = data_row[1][3]
-            racer_rank = data_row[1][4]
+            racer_rank = data_row[1][4].lstrip()
+            
+            if racer_rank == "A1":
+                racer_rank_int = 1
+            elif racer_rank == "A2":
+                racer_rank_int = 2
+            elif racer_rank == "B1":
+                racer_rank_int = 3
+            else:
+                racer_rank_int = 4
+            
             name_of_year = data_row[1][5]
             base_year = 0
             if name_of_year == 'S':
@@ -78,34 +89,40 @@ def get_racer_info_list():
             sixth_course_average_start_rank = float(data_row[1][43]) / 100
 
             previous_period_rank = data_row[1][44].lstrip()
+            
             if previous_period_rank == "A1":
-                previous_period_rank = 4
+                previous_period_rank_int = 1
             elif previous_period_rank == "A2":
-                previous_period_rank = 3
+                previous_period_rank_int = 2
             elif previous_period_rank == "B1":
-                previous_period_rank = 2
+                previous_period_rank_int = 3
             else:
-                previous_period_rank = 1
-
+                previous_period_rank_int = 4
+            
+            
             previous_second_period_rank = data_row[1][45].lstrip()
+            
             if previous_second_period_rank == "A1":
-                previous_second_period_rank = 4
+                previous_second_period_rank_int = 1
             elif previous_second_period_rank == "A2":
-                previous_second_period_rank = 3
+                previous_second_period_rank_int = 2
             elif previous_second_period_rank == "B1":
-                previous_second_period_rank = 2
+                previous_second_period_rank_int = 3
             else:
-                previous_second_period_rank = 1
-
+                previous_second_period_rank_int = 4
+            
+            
             previous_third_period_rank = data_row[1][46].lstrip()
+            
             if previous_third_period_rank == "A1":
-                previous_third_period_rank = 4
+                previous_third_period_rank_int = 1
             elif previous_third_period_rank == "A2":
-                previous_third_period_rank = 3
+                previous_third_period_rank_int = 2
             elif previous_third_period_rank == "B1":
-                previous_third_period_rank = 2
+                previous_third_period_rank_int = 3
             else:
-                previous_third_period_rank = 1
+                previous_third_period_rank_int = 4
+                
 
             previous_period_capability_index = float(data_row[1][47]) / 100
             this_period_capability_index = float(data_row[1][48]) / 100
@@ -222,6 +239,7 @@ def get_racer_info_list():
                 racer_name_kana = racer_name_kana,
                 branch_prefecture = branch_prefecture,
                 racer_rank = racer_rank,
+                racer_rank_int = racer_rank_int,
                 birth_date = birth_date,
                 racer_sex = racer_sex,
                 racer_age = racer_age,
@@ -261,8 +279,11 @@ def get_racer_info_list():
                 sixth_course_average_start_timing = sixth_course_average_start_timing,
                 sixth_course_average_start_rank = sixth_course_average_start_rank,
                 previous_period_rank = previous_period_rank,
+                previous_period_rank_int = previous_period_rank_int,                
                 previous_second_period_rank = previous_second_period_rank,
+                previous_second_period_rank_int = previous_second_period_rank_int,
                 previous_third_period_rank = previous_third_period_rank,
+                previous_third_period_rank_int = previous_third_period_rank_int,
                 previous_period_capability_index = previous_period_capability_index,
                 this_period_capability_index = this_period_capability_index,
                 year = year,
@@ -368,12 +389,15 @@ def get_racer_info_list():
     return racer_info_list
 
 def main():
-    engine = create_engine('sqlite:///racer_info1504.sqlite3')
+    engine = create_engine('sqlite:///race_result_test.sqlite3')
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
-    racer_info_list = get_racer_info_list()
-    session.add_all(racer_info_list)
+    files = glob.glob('dataset/senshu_csv_data/*')
+    files.sort()
+    for target_file in files:
+        racer_info_list = get_racer_info_list(target_file)
+        session.add_all(racer_info_list)
     session.commit()
 
 if __name__ == '__main__':
