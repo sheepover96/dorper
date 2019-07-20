@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 import pandas as pd
 import datetime
+import glob
 
 from models import Base, RacerInfo
 
@@ -37,51 +38,77 @@ def get_racer_info_list():
             racer_height = int(data_row[1][9])
             racer_weight = int(data_row[1][10])
             racer_blood_type = data_row[1][11].rstrip()
-            racer_win_rate = int(data_row[1][12])
-            racer_double_win_rate = int(data_row[1][13])
+            racer_win_rate = float(data_row[1][12]) / 1000
+            racer_double_win_rate = float(data_row[1][13]) / 100
             racer_first_arrival_times = int(data_row[1][14])
             racer_second_arrival_times = int(data_row[1][15])
             racer_start_times = int(data_row[1][16])
             winner_race_start_times = int(data_row[1][17])
             num_of_win = int(data_row[1][18])
-            average_start_timing = int(data_row[1][19])
+            average_start_timing = float(data_row[1][19]) / 100
 
             first_course_entry_time = int(data_row[1][20])
-            first_course_double_win_time = int(data_row[1][21])
+            first_course_double_win_rate = float(data_row[1][21]) / 1000
             first_course_average_start_timing = int(data_row[1][22])
-            first_course_average_start_rank = int(data_row[1][23])
+            first_course_average_start_rank = float(data_row[1][23])/ 100
 
             second_course_entry_time = int(data_row[1][24])
-            second_course_double_win_time = int(data_row[1][25])
+            second_course_double_win_rate = float(data_row[1][25]) / 1000
             second_course_average_start_timing = int(data_row[1][26])
-            second_course_average_start_rank = int(data_row[1][27])
+            second_course_average_start_rank = float(data_row[1][27]) / 100
 
             third_course_entry_time = int(data_row[1][28])
-            third_course_double_win_time = int(data_row[1][29])
+            third_course_double_win_rate = float(data_row[1][29]) / 1000
             third_course_average_start_timing = int(data_row[1][30])
-            third_course_average_start_rank = int(data_row[1][31])
+            third_course_average_start_rank = float(data_row[1][31]) / 100
 
             fourth_course_entry_time = int(data_row[1][32])
-            fourth_course_double_win_time = int(data_row[1][33])
+            fourth_course_double_win_rate = float(data_row[1][33]) / 1000
             fourth_course_average_start_timing = int(data_row[1][34])
-            fourth_course_average_start_rank = int(data_row[1][35])
+            fourth_course_average_start_rank = float(data_row[1][35]) / 100
 
             fifth_course_entry_time = int(data_row[1][36])
-            fifth_course_double_win_time = int(data_row[1][37])
+            fifth_course_double_win_rate = float(data_row[1][37]) / 1000
             fifth_course_average_start_timing = int(data_row[1][38])
-            fifth_course_average_start_rank = int(data_row[1][39])
+            fifth_course_average_start_rank = float(data_row[1][39]) / 100
 
             sixth_course_entry_time = int(data_row[1][40])
-            sixth_course_double_win_time = int(data_row[1][41])
+            sixth_course_double_win_rate = float(data_row[1][41]) / 1000
             sixth_course_average_start_timing = int(data_row[1][42])
-            sixth_course_average_start_rank = int(data_row[1][43])
+            sixth_course_average_start_rank = float(data_row[1][43]) / 100
 
-            previous_period_rank = data_row[1][44]
-            previous_second_period_rank = data_row[1][45]
-            previous_third_period_rank = data_row[1][46]
+            previous_period_rank = data_row[1][44].lstrip()
+            if previous_period_rank == "A1":
+                previous_period_rank = 4
+            elif previous_period_rank == "A2":
+                previous_period_rank = 3
+            elif previous_period_rank == "B1":
+                previous_period_rank = 2
+            else:
+                previous_period_rank = 1
 
-            previous_period_capability_index = int(data_row[1][47])
-            this_period_capability_index = int(data_row[1][48])
+            previous_second_period_rank = data_row[1][45].lstrip()
+            if previous_second_period_rank == "A1":
+                previous_second_period_rank = 4
+            elif previous_second_period_rank == "A2":
+                previous_second_period_rank = 3
+            elif previous_second_period_rank == "B1":
+                previous_second_period_rank = 2
+            else:
+                previous_second_period_rank = 1
+
+            previous_third_period_rank = data_row[1][46].lstrip()
+            if previous_third_period_rank == "A1":
+                previous_third_period_rank = 4
+            elif previous_third_period_rank == "A2":
+                previous_third_period_rank = 3
+            elif previous_third_period_rank == "B1":
+                previous_third_period_rank = 2
+            else:
+                previous_third_period_rank = 1
+
+            previous_period_capability_index = float(data_row[1][47]) / 100
+            this_period_capability_index = float(data_row[1][48]) / 100
 
             year = int(data_row[1][49])
             period = int(data_row[1][50])
@@ -210,27 +237,27 @@ def get_racer_info_list():
                 number_of_win = num_of_win,
                 average_start_timing = average_start_timing,
                 first_course_entry_time = first_course_entry_time,
-                first_course_double_win_time = first_course_double_win_time,
+                first_course_double_win_rate = first_course_double_win_rate,
                 first_course_average_start_timing = first_course_average_start_timing,
                 first_course_average_start_rank = first_course_average_start_rank,
                 second_course_entry_time = second_course_entry_time,
-                second_course_double_win_time = second_course_double_win_time,
+                second_course_double_win_rate = second_course_double_win_rate,
                 second_course_average_start_timing = second_course_average_start_timing,
                 second_course_average_start_rank = second_course_average_start_rank,
                 third_course_entry_time = third_course_entry_time,
-                third_course_double_win_time = third_course_double_win_time,
+                third_course_double_win_rate = third_course_double_win_rate,
                 third_course_average_start_timing = third_course_average_start_timing,
                 third_course_average_start_rank = third_course_average_start_rank,
                 fourth_course_entry_time = fourth_course_entry_time,
-                fourth_course_double_win_time = fourth_course_double_win_time,
+                fourth_course_double_win_rate = fourth_course_double_win_rate,
                 fourth_course_average_start_timing = fourth_course_average_start_timing,
                 fourth_course_average_start_rank = fourth_course_average_start_rank,
                 fifth_course_entry_time = fifth_course_entry_time,
-                fifth_course_double_win_time = fifth_course_double_win_time,
+                fifth_course_double_win_rate = fifth_course_double_win_rate,
                 fifth_course_average_start_timing = fifth_course_average_start_timing,
                 fifth_course_average_start_rank = fifth_course_average_start_rank,
                 sixth_course_entry_time = sixth_course_entry_time,
-                sixth_course_double_win_time = sixth_course_double_win_time,
+                sixth_course_double_win_rate = sixth_course_double_win_rate,
                 sixth_course_average_start_timing = sixth_course_average_start_timing,
                 sixth_course_average_start_rank = sixth_course_average_start_rank,
                 previous_period_rank = previous_period_rank,
