@@ -1,8 +1,18 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, Float, String, Date
+from sqlalchemy import Column, Integer, Float, String, Date, ForeignKey, Boolean
 
 Base = declarative_base()
  
+class RaceInfo(Base):
+    __tablename__ = 'race_info'
+ 
+    id = Column(Integer, primary_key=True)
+    race_num = Column(Integer, ForeignKey("race_result.race_num"))
+    year = Column(Integer)
+    is_race_valid = Column(Boolean)
+ 
+    #def __repr__(self):
+    #    return "<Student(id='%s', name='%s', score='%s')>" % (self.id, self.name, self.score)
  
 class RaceResult(Base):
     __tablename__ = 'race_result'
