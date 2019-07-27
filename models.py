@@ -9,7 +9,13 @@ class RaceInfo(Base):
     id = Column(Integer, primary_key=True)
     race_num = Column(Integer, ForeignKey("race_result.race_num"))
     year = Column(Integer)
-    is_race_valid = Column(Boolean)
+    is_race_no_flying = Column(Boolean)
+    is_race_times_record_valid = Column(Boolean)
+    lane_length = Column(String)
+    weather = Column(String)
+    wind_direction = Column(String)
+    wind_strength = Column(Integer)
+    wave_height = Column(Integer) 
  
     #def __repr__(self):
     #    return "<Student(id='%s', name='%s', score='%s')>" % (self.id, self.name, self.score)
