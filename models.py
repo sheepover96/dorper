@@ -2,10 +2,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, Float, String, Date, ForeignKey, Boolean
 
 Base = declarative_base()
- 
+
 class RaceInfo(Base):
     __tablename__ = 'race_info'
- 
+
     id = Column(Integer, primary_key=True)
     race_num = Column(Integer, ForeignKey("race_result.race_num"))
     year = Column(Integer)
@@ -15,17 +15,38 @@ class RaceInfo(Base):
     weather = Column(String)
     wind_direction = Column(String)
     wind_strength = Column(Integer)
-    wave_height = Column(Integer) 
- 
+    wave_height = Column(Integer)
+
     #def __repr__(self):
     #    return "<Student(id='%s', name='%s', score='%s')>" % (self.id, self.name, self.score)
- 
+
+class RaceOdds(Base):
+    __tablename__ = 'race_odds'
+
+    id = Column(Integer, primary_key=True)
+    race_num = Column(Integer, ForeignKey("race_result.race_num"))
+    year = Column(Integer)
+    rank1_lane = Column(Integer)
+    rank2_lane = Column(Integer)
+    rank3_lane = Column(Integer)
+    tanshou = Column(Integer)
+    fukushou1 = Column(Integer)
+    fukushou2 = Column(Integer)
+    nirentan = Column(Integer)
+    nirenfuku = Column(Integer)
+    kakurenfuku1_2 = Column(Integer)
+    kakurenfuku1_3 = Column(Integer)
+    kakurenfuku2_3 = Column(Integer)
+    sanrentan = Column(Integer)
+    sanrenfuku = Column(Integer)
+
 class RaceResult(Base):
     __tablename__ = 'race_result'
  
     id = Column(Integer, primary_key=True)
     race_num = Column(Integer)
     rank = Column(Integer)
+    rank_str = Column(Integer)
     pitout_lane = Column(Integer)
     racer_id = Column(Integer)
     racer_name = Column(String(255))
