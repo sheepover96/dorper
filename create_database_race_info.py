@@ -33,13 +33,12 @@ def main():
         non_valid_race_times_record_num_set_year = set(non_valid_race_times_record_num_list_year)
 
         for idx, race_num_obj in enumerate(race_result_num_year_all):
-            print(year, race_num_obj.race_num)
             race_num = race_num_obj.race_num
             race_result_info = race_metadata_year[race_metadata_year['race_num']==race_num]
             if not race_result_info.empty:
-                lane_length = str(race_result_info['lane_length'])
-                weather = str(race_result_info['weather'])
-                wind_direction = str(race_result_info['wind_direction'])
+                lane_length = str(race_result_info['lane_length'].iat[0])
+                weather = str(race_result_info['weather'].iat[0])
+                wind_direction = str(race_result_info['wind_direction'].iat[0])
                 wind_strength = int(race_result_info['wind_strength'])
                 wave_height = int(race_result_info['wave_height'])
                 #print(race_metadata_year[race_metadata_year['race_num']==race_num])
@@ -53,6 +52,7 @@ def main():
                 is_race_times_record_valid=is_race_times_record_valid, lane_length=lane_length,
                 weather=weather, wind_direction=wind_direction, wind_strength=wind_strength, wave_height=wave_height)
                 race_info_list.append(new_race_info)
+
 
     session.add_all(race_info_list)
     session.commit()
