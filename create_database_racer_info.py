@@ -50,7 +50,7 @@ def get_racer_info_list(path):
             racer_weight = int(data_row[1][10])
             racer_blood_type = data_row[1][11].rstrip()
             racer_win_rate = float(data_row[1][12]) / 1000
-            racer_double_win_rate = float(data_row[1][13]) / 100
+            racer_double_win_rate = float(data_row[1][13]) / 1000
             racer_first_arrival_times = int(data_row[1][14])
             racer_second_arrival_times = int(data_row[1][15])
             racer_start_times = int(data_row[1][16])
@@ -389,7 +389,7 @@ def get_racer_info_list(path):
     return racer_info_list
 
 def main():
-    engine = create_engine('sqlite:///race_result_test.sqlite3')
+    engine = create_engine('sqlite:///race_database_new.sqlite3')
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()

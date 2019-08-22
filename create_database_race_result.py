@@ -72,7 +72,7 @@ def get_race_result_list(path):
                 date = datetime.date(int('20' + date_str[:2]), int(date_str[2:4]), int(date_str[4:6]))
 
 
-            race_result_list.append(RaceResult(id=data_pk, race_num=race_id, rank=rank, pitout_lane=pitout_lane,
+            race_result_list.append(RaceResult(race_num=race_id, rank=rank, pitout_lane=pitout_lane,
                 racer_id=racer_id, racer_name=racer_name, motor=motor, boat=boat, tenji=tenji,
                 shinnyu=shinnyu, start_timing=start_timing, race_time=race_time, date=date, year=year))
             data_pk += 1
