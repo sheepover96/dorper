@@ -19,7 +19,7 @@ def get_racer_info_list(path):
             racer_name_kana = data_row[1][2].rstrip()
             branch_prefecture = data_row[1][3]
             racer_rank = data_row[1][4].lstrip()
-            
+
             if racer_rank == "A1":
                 racer_rank_int = 1
             elif racer_rank == "A2":
@@ -28,7 +28,7 @@ def get_racer_info_list(path):
                 racer_rank_int = 3
             else:
                 racer_rank_int = 4
-            
+
             name_of_year = data_row[1][5]
             base_year = 0
             if name_of_year == 'S':
@@ -89,7 +89,7 @@ def get_racer_info_list(path):
             sixth_course_average_start_rank = float(data_row[1][43]) / 100
 
             previous_period_rank = data_row[1][44].lstrip()
-            
+
             if previous_period_rank == "A1":
                 previous_period_rank_int = 1
             elif previous_period_rank == "A2":
@@ -98,10 +98,10 @@ def get_racer_info_list(path):
                 previous_period_rank_int = 3
             else:
                 previous_period_rank_int = 4
-            
-            
+
+
             previous_second_period_rank = data_row[1][45].lstrip()
-            
+
             if previous_second_period_rank == "A1":
                 previous_second_period_rank_int = 1
             elif previous_second_period_rank == "A2":
@@ -110,10 +110,10 @@ def get_racer_info_list(path):
                 previous_second_period_rank_int = 3
             else:
                 previous_second_period_rank_int = 4
-            
-            
+
+
             previous_third_period_rank = data_row[1][46].lstrip()
-            
+
             if previous_third_period_rank == "A1":
                 previous_third_period_rank_int = 1
             elif previous_third_period_rank == "A2":
@@ -122,7 +122,7 @@ def get_racer_info_list(path):
                 previous_third_period_rank_int = 3
             else:
                 previous_third_period_rank_int = 4
-                
+
 
             previous_period_capability_index = float(data_row[1][47]) / 100
             this_period_capability_index = float(data_row[1][48]) / 100
@@ -279,7 +279,7 @@ def get_racer_info_list(path):
                 sixth_course_average_start_timing = sixth_course_average_start_timing,
                 sixth_course_average_start_rank = sixth_course_average_start_rank,
                 previous_period_rank = previous_period_rank,
-                previous_period_rank_int = previous_period_rank_int,                
+                previous_period_rank_int = previous_period_rank_int,
                 previous_second_period_rank = previous_second_period_rank,
                 previous_second_period_rank_int = previous_second_period_rank_int,
                 previous_third_period_rank = previous_third_period_rank,

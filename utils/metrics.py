@@ -1,7 +1,7 @@
 def accuracy_tanshou(pred, target):
     correct_count = 0
     ndata = len(pred)
-    for pred_row, target_row in zip(pred, target): 
+    for pred_row, target_row in zip(pred, target):
         pred1stidx = pred_row.index(1)
         target1stidx = target_row.index(1)
         if pred1stidx == target1stidx:
@@ -11,7 +11,7 @@ def accuracy_tanshou(pred, target):
 def accuracy_fukushou(pred, target):
     correct_count = 0
     ndata = len(pred)
-    for pred_row, target_row in zip(pred, target): 
+    for pred_row, target_row in zip(pred, target):
         pred1stidx = pred_row.index(1)
         target1stidx = target_row.index(1)
         target2ndidx = target_row.index(2)
@@ -23,7 +23,7 @@ def accuracy_fukushou(pred, target):
 def accuracy_nirentan(pred, target):
     correct_count = 0
     ndata = len(pred)
-    for pred_row, target_row in zip(pred, target): 
+    for pred_row, target_row in zip(pred, target):
         pred1stidx = pred_row.index(1)
         pred2ndidx = pred_row.index(2)
         target1stidx = target_row.index(1)
@@ -35,7 +35,7 @@ def accuracy_nirentan(pred, target):
 def accuracy_nirenfuku(pred, target):
     correct_count = 0
     ndata = len(pred)
-    for pred_row, target_row in zip(pred, target): 
+    for pred_row, target_row in zip(pred, target):
         pred1stidx = pred_row.index(1)
         pred2ndidx = pred_row.index(2)
         target1stidx = target_row.index(1)
@@ -48,7 +48,7 @@ def accuracy_nirenfuku(pred, target):
 def accuracy_sanrentan(pred, target):
     correct_count = 0
     ndata = len(pred)
-    for pred_row, target_row in zip(pred, target): 
+    for pred_row, target_row in zip(pred, target):
         pred1stidx = pred_row.index(1)
         pred2ndidx = pred_row.index(2)
         pred3rdidx = pred_row.index(3)
@@ -62,7 +62,7 @@ def accuracy_sanrentan(pred, target):
 def accuracy_sanrenfuku(pred, target):
     correct_count = 0
     ndata = len(pred)
-    for pred_row, target_row in zip(pred, target): 
+    for pred_row, target_row in zip(pred, target):
         pred1stidx = pred_row.index(1)
         pred2ndidx = pred_row.index(2)
         pred3rdidx = pred_row.index(3)

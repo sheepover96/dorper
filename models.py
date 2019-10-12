@@ -42,7 +42,7 @@ class RaceOdds(Base):
 
 class RaceResult(Base):
     __tablename__ = 'race_result'
- 
+
     id = Column(Integer, primary_key=True)
     race_num = Column(Integer)
     rank = Column(Integer)
@@ -59,7 +59,7 @@ class RaceResult(Base):
     race_time = Column(Float)
     year = Column(Integer)
     date = Column(Date)
- 
+
     #def __repr__(self):
     #    return "<Student(id='%s', name='%s', score='%s')>" % (self.id, self.name, self.score)
 

@@ -75,7 +75,6 @@ def main():
             kakurenfuku1_3=kakurenfuku1_3, kakurenfuku2_3=kakurenfuku2_3, sanrentan=sanrentan,sanrenfuku=sanrenfuku))
     session.add_all(race_odds_list)
     session.commit()
-    
 
 if __name__ == '__main__':
     main()

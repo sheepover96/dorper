@@ -13,7 +13,6 @@ from setting import session
 
 rank_dic = {1:150, 2:100, 3:50, 4:0}
 
-
 def load_train_data(year, data_num=1000000000):
     # for training
     race_result_list17 = session.query(RaceResult).filter(RaceResult.year==year)
@@ -30,7 +29,7 @@ def load_train_data(year, data_num=1000000000):
                     where race_result. year={} and is_race_no_flying=1 and is_race_times_record_valid=1 order by race_num, pitout_lane limit {};'.format(year, data_num*6))
 
     input_feature_list = []
-    target_list = []                                                      
+    target_list = []
     feature_vec = []
     target_vec = []
     target_vec_part = [0 for i in range(6)]
@@ -72,14 +71,14 @@ def load_train_data(year, data_num=1000000000):
 session.rollback()
 # %%
 input_feature_list, target_list = load_train_data(2017, data_num=700)
-    
+
 # %%
 from sklearn.ensemble import RandomForestRegressor
 # train model
 kfold = KFold(n_splits=4)
 for train_idxs, val_idxs in kfold.split(input_feature_list):
     train_feature = [input_feature_list[train_idx] for train_idx in train_idxs]
-    train_feature_np = np.array(train_feature) 
+    train_feature_np = np.array(train_feature)
     print(train_feature_np.shape)
     train_target = [target_list[train_idx] for train_idx in train_idxs]
     train_target_np = np.array(train_target)
@@ -100,7 +99,7 @@ for train_idxs, val_idxs in kfold.split(input_feature_list):
 
 #%%
 
-# load test data 
+# load test data
 test_feature_list, test_target_list = load_train_data(2018, data_num=100)
 
 #%%
@@ -133,6 +132,7 @@ test_pred_res = model.predict(test_feature_np)
 for idx, (pred, target) in enumerate(zip(test_pred_res, test_target_np)):
     print(idx)
     print(len(pred), len(target))
+    print(pred)
     print(onehot2rank(pred))
     print(onehot2rank(target))
 pred_rank_list = [onehot2rank(pred) for pred in test_pred_res.tolist()]

@@ -19,12 +19,13 @@ def main():
         race_result_list_year[year] = tmp_res_list
 
     for year in range(2000, 2019):
+        print(year)
         race_metadata_year = race_metadata[race_metadata['year']==year]
 
         race_result_year_all = race_result_list_year[year].distinct(RaceResult.race_num).all()
         race_result_num_year_all = session.query(RaceResult.race_num).filter(RaceResult.year==year).distinct(RaceResult.race_num).all()
 
-        non_valid_race_result_year = race_result_list_year[year].filter(RaceResult.rank>6, RaceResult.rank<1).all()
+        non_valid_race_result_year = race_result_list_year[year].filter(or_(RaceResult.rank>6, RaceResult.rank<1)).all()
         non_valid_race_num_list_year = [race_result.race_num for race_result in non_valid_race_result_year]
         non_valid_race_num_set_year = set(non_valid_race_num_list_year)
 
