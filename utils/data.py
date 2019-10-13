@@ -2,8 +2,13 @@ from sqlalchemy.sql import text
 
 from models import RaceResult, RacerInfo, RaceInfo, RaceOdds
 from setting import session
+from collections import namedtuple
 
 rank_dic = {1:150, 2:100, 3:50, 4:0}
+RaceOddsInfo = namedtuple('RaceOddsInfo', ['rank1_lane', 'rank2_lane', 'rank3_lane',
+                                           'tanshou', 'fukushou1', 'fukushou2', 'nirentan',
+                                           'nirenfuku', 'kakurenfuku1_2', 'kakurenfuku1_3',
+                                           'kakurenfuku2_3', 'sanrentan', 'sanrenfuku'])
 
 def load_data(year, data_num=1000000000):
     # for training
@@ -58,11 +63,11 @@ def load_data(year, data_num=1000000000):
             if len(feature_vec) == 96:
                 input_feature_list.append(feature_vec)
                 target_list.append(target_vec)
-                race_odds_info = [race_data.rank1_lane, race_data.rank2_lane, race_data.rank3_lane,
+                race_odds_info = RaceOddsInfo(race_data.rank1_lane, race_data.rank2_lane, race_data.rank3_lane,
                     race_data.tanshou, race_data.fukushou1, race_data.fukushou2,
                     race_data.nirentan, race_data.nirenfuku, race_data.kakurenfuku1_2,
                     race_data.kakurenfuku1_3, race_data.kakurenfuku2_3, race_data.sanrentan,
-                    race_data.sanrenfuku]
+                    race_data.sanrenfuku)
                 race_odds_list.append(race_odds_info)
             feature_vec = []
             target_vec = []

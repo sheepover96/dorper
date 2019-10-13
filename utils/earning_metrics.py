@@ -26,12 +26,16 @@ def earning_fukushou(racer_win_prob, target_comb_dic, threshold):
     fukushou_prolist = problist_fukushou(racer_win_prob)
     revenue = 0
     payment = 0
+    sorted_key_target_comb_dic = {}
+    for (key, val) in target_comb_dic.items():
+        sorted_key = tuple(sorted(key))
+        sorted_key_target_comb_dic[sorted_key] = val
     prob_sorted = sorted(fukushou_prolist.items(), key=lambda x:x[1], reverse=True)
     for comb, prob in prob_sorted:
         if prob < threshold: break
         payment += 100
-        if comb in target_comb_dic:
-            revenue += target_comb_dic[comb]
+        if comb in sorted_key_target_comb_dic:
+            revenue += sorted_key_target_comb_dic[comb]
     return payment, revenue
 
 def problist_fukushou(racer_win_prob):
@@ -66,12 +70,16 @@ def earning_nirenfuku(racer_win_prob, target_comb_dic, threshold):
     nirenfuku_prolist = problist_nirenfuku(racer_win_prob)
     revenue = 0
     payment = 0
+    sorted_key_target_comb_dic = {}
+    for (key, val) in target_comb_dic.items():
+        sorted_key = tuple(sorted(key))
+        sorted_key_target_comb_dic[sorted_key] = val
     prob_sorted = sorted(nirenfuku_prolist.items(), key=lambda x:x[1], reverse=True)
     for comb, prob in prob_sorted:
         if prob < threshold: break
         payment += 100
-        if comb in target_comb_dic:
-            revenue += target_comb_dic[comb]
+        if comb in sorted_key_target_comb_dic:
+            revenue += sorted_key_target_comb_dic[comb]
     return payment, revenue
 
 def problist_nirenfuku(racer_win_prob):
@@ -119,11 +127,15 @@ def earning_sanrenfuku(racer_win_prob, target_comb_dic, threshold):
     revenue = 0
     payment = 0
     prob_sorted = sorted(sanrenfuku_prolist.items(), key=lambda x:x[1], reverse=True)
+    sorted_key_target_comb_dic = {}
+    for (key, val) in target_comb_dic.items():
+        sorted_key = tuple(sorted(key))
+        sorted_key_target_comb_dic[sorted_key] = val
     for comb, prob in prob_sorted:
         if prob < threshold: break
         payment += 100
-        if comb in target_comb_dic:
-            revenue += target_comb_dic[comb]
+        if comb in sorted_key_target_comb_dic:
+            revenue += sorted_key_target_comb_dic[comb]
     return payment, revenue
 
 def problist_sanrenfuku(racer_win_prob):

@@ -112,8 +112,8 @@ def test_sanrenfuku_earning():
     race_odds = 200
     threshold1 = 0.2
     threshold2 = 0.02
-    target_comb_dic = {(target_rank_list[2]-1, target_rank_list[0]-1,
-                        target_rank_list[1]-1): race_odds}
+    target_comb_dic = {(target_rank_list[0]-1, target_rank_list[1]-1,
+                        target_rank_list[2]-1): race_odds}
 
     payment1, revenue1 = em.earning_sanrenfuku(test_win_prob, target_comb_dic, threshold1)
     assert payment1 == 100 and revenue1 == race_odds
