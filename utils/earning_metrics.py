@@ -93,6 +93,18 @@ def problist_nirenfuku(racer_win_prob):
 #                        get_lane_win_prob(racer_win_prob, comb[1], 0) *\
 #                        get_lane_win_prob(racer_win_prob, comb[0], 1)
 
+def earning_sanrentan(racer_win_prob, target_comb_dic, threshold):
+    sanrentan_prolist = problist_sanrentan(racer_win_prob)
+    revenue = 0
+    payment = 0
+    prob_sorted = sorted(sanrentan_prolist.items(), key=lambda x:x[1], reverse=True)
+    for comb, prob in prob_sorted:
+        if prob < threshold: break
+        payment += 100
+        if comb in target_comb_dic:
+            revenue += target_comb_dic[comb]
+    return payment, revenue
+
 def problist_sanrentan(racer_win_prob):
     sanrentan_comb = list(permutations(range(6), 3))
     problist = {}
@@ -101,6 +113,18 @@ def problist_sanrentan(racer_win_prob):
                         get_lane_win_prob(racer_win_prob, comb[1], 1) *\
                         get_lane_win_prob(racer_win_prob, comb[2], 2)
     return problist
+
+def earning_sanrenfuku(racer_win_prob, target_comb_dic, threshold):
+    sanrenfuku_prolist = problist_sanrenfuku(racer_win_prob)
+    revenue = 0
+    payment = 0
+    prob_sorted = sorted(sanrenfuku_prolist.items(), key=lambda x:x[1], reverse=True)
+    for comb, prob in prob_sorted:
+        if prob < threshold: break
+        payment += 100
+        if comb in target_comb_dic:
+            revenue += target_comb_dic[comb]
+    return payment, revenue
 
 def problist_sanrenfuku(racer_win_prob):
     sanrenfuku_comb = list(combinations(range(6), 3))
