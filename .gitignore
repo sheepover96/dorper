@@ -1,3 +1,8 @@
+.vscode
+.ipynb_checkpoints
+imgs
+rep
+*.sqlite3
 *.csv
 geckodriver.log
 __pycache__
