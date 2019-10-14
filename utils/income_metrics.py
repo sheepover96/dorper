@@ -3,7 +3,7 @@ from itertools import permutations, combinations
 def get_lane_win_prob(racer_win_prob, lane, rank):
     return racer_win_prob[lane*6+rank]
 
-def earning_tanshou(racer_win_prob, target_comb_dic, threshold):
+def income_tanshou(racer_win_prob, target_comb_dic, threshold):
     tanshou_prolist = problist_tanshou(racer_win_prob)
     revenue = 0
     payment = 0
@@ -22,7 +22,7 @@ def problist_tanshou(racer_win_prob):
         problist[comb] = get_lane_win_prob(racer_win_prob, comb[0], 0)
     return problist
 
-def earning_fukushou(racer_win_prob, target_comb_dic, threshold):
+def income_fukushou(racer_win_prob, target_comb_dic, threshold):
     fukushou_prolist = problist_fukushou(racer_win_prob)
     revenue = 0
     payment = 0
@@ -46,7 +46,7 @@ def problist_fukushou(racer_win_prob):
                         get_lane_win_prob(racer_win_prob, comb[0], 1)
     return problist
 
-def earning_nirentan(racer_win_prob, target_comb_dic, threshold):
+def income_nirentan(racer_win_prob, target_comb_dic, threshold):
     nirentan_prolist = problist_nirentan(racer_win_prob)
     revenue = 0
     payment = 0
@@ -66,7 +66,7 @@ def problist_nirentan(racer_win_prob):
                         * get_lane_win_prob(racer_win_prob, comb[1], 1)
     return problist
 
-def earning_nirenfuku(racer_win_prob, target_comb_dic, threshold):
+def income_nirenfuku(racer_win_prob, target_comb_dic, threshold):
     nirenfuku_prolist = problist_nirenfuku(racer_win_prob)
     revenue = 0
     payment = 0
@@ -101,7 +101,7 @@ def problist_nirenfuku(racer_win_prob):
 #                        get_lane_win_prob(racer_win_prob, comb[1], 0) *\
 #                        get_lane_win_prob(racer_win_prob, comb[0], 1)
 
-def earning_sanrentan(racer_win_prob, target_comb_dic, threshold):
+def income_sanrentan(racer_win_prob, target_comb_dic, threshold):
     sanrentan_prolist = problist_sanrentan(racer_win_prob)
     revenue = 0
     payment = 0
@@ -122,7 +122,7 @@ def problist_sanrentan(racer_win_prob):
                         get_lane_win_prob(racer_win_prob, comb[2], 2)
     return problist
 
-def earning_sanrenfuku(racer_win_prob, target_comb_dic, threshold):
+def income_sanrenfuku(racer_win_prob, target_comb_dic, threshold):
     sanrenfuku_prolist = problist_sanrenfuku(racer_win_prob)
     revenue = 0
     payment = 0
