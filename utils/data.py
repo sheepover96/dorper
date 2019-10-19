@@ -1,4 +1,7 @@
+import numpy as np
+import pandas as pd
 from sqlalchemy.sql import text
+from sqlalchemy import case, cast, Float
 
 from models import RaceResult, RacerInfo, RaceInfo, RaceOdds
 from setting import session
@@ -78,3 +81,178 @@ def load_odds(year, race_num):
     # for training
     race_odd_data = session.query(RaceOdds).filter(RaceOdds.year==year, RaceOdds.race_num==race_num).first()
     return race_odd_data
+
+def load_test_data(year=2018, data_num=1000000000):
+
+    res_test_features = session.query(
+            RaceResult.race_num.label("race_num"),
+            RaceInfo.is_race_no_flying.label("valid"),
+            cast(RacerInfo.racer_rank_int, Float).label("racer_rank_int"),
+            cast(RaceResult.rank, Float).label("result_rank"),
+            cast(RacerInfo.this_period_capability_index, Float).label("racer_capability_index"),
+            case([(RaceResult.pitout_lane == 1, cast(RacerInfo.first_course_first_arrive, Float) / cast(RacerInfo.first_course_entry_time, Float)),
+            (RaceResult.pitout_lane == 2, cast(RacerInfo.second_course_first_arrive, Float) / cast(RacerInfo.second_course_entry_time, Float)),
+            (RaceResult.pitout_lane == 3, cast(RacerInfo.third_course_first_arrive, Float) / cast(RacerInfo.third_course_entry_time, Float)),
+            (RaceResult.pitout_lane == 4, cast(RacerInfo.fourth_course_first_arrive, Float) / cast(RacerInfo.fourth_course_entry_time, Float)),
+            (RaceResult.pitout_lane == 5, cast(RacerInfo.fifth_course_first_arrive, Float) / cast(RacerInfo.fifth_course_entry_time, Float)),
+            (RaceResult.pitout_lane == 6, cast(RacerInfo.sixth_course_first_arrive, Float) / cast(RacerInfo.sixth_course_entry_time, Float)),]).label("win_rate"),
+            case([(RaceResult.pitout_lane == 1, RacerInfo.first_course_double_win_rate),
+            (RaceResult.pitout_lane == 2, RacerInfo.second_course_double_win_rate),
+            (RaceResult.pitout_lane == 3, RacerInfo.third_course_double_win_rate),
+            (RaceResult.pitout_lane == 4, RacerInfo.fourth_course_double_win_rate),
+            (RaceResult.pitout_lane == 5, RacerInfo.fifth_course_double_win_rate),
+            (RaceResult.pitout_lane == 6, RacerInfo.sixth_course_double_win_rate)]).label("double_win_rate"),
+            RaceOdds.rank1_lane.label("rank1_lane"),
+            RaceOdds.rank2_lane.label("rank2_lane"),
+            RaceOdds.rank3_lane.label("rank3_lane"),
+            RaceOdds.tanshou.label("tanshou"),
+            RaceOdds.fukushou1.label("fukushou1"),
+            RaceOdds.fukushou2.label("fukushou2"),
+            RaceOdds.nirentan.label("nirentan"),
+            RaceOdds.nirenfuku.label("nirenfuku"),
+            RaceOdds.sanrentan.label("sanrentan"),
+            RaceOdds.sanrenfuku.label("sanrenfuku")).join(
+                RacerInfo, RacerInfo.racer_id == RaceResult.racer_id).join(
+                    RaceInfo, RaceInfo.race_num == RaceResult.race_num).join(
+                    RaceOdds, RaceInfo.race_num == RaceOdds.race_num).filter(
+                    RaceInfo.is_race_no_flying == 1,
+                    RaceInfo.year == year,
+                    RaceResult.year == year,
+                    RaceOdds.year == year,
+                    RacerInfo.year == year-1,
+                    RacerInfo.period == 1
+                ).order_by(RaceResult.race_num.asc(), RaceResult.pitout_lane.asc()).all()
+
+    race_numbers = []
+    test_input_features = []
+    test_input_features_part = []
+    test_target_labels = []
+    test_target_labels_part = []
+    odds_sanrentan_list = []
+    odds_nirentan_list = []
+    odds_tanshou_list = []
+    odds_rank_top3_list = []
+
+    for idx, r in enumerate(res_test_features):
+        rank_vec = [0,0,0,0,0,0]
+        if (idx)%6 == 0:
+            test_input_features_part = []
+            test_target_labels_part = []
+
+            rank_existing_list = [False for i in range(6)]
+            RANK1 = False
+            RANK2 = False
+            RANK3 = False
+            RANK4 = False
+            RANK5 = False
+            RANK6 = False
+
+        test_input_features_part += [r.racer_rank_int, r.racer_capability_index, r.win_rate, r.double_win_rate]
+        rank_vec[int(r.result_rank)-1] = 1
+        test_target_labels_part += rank_vec
+
+        rank_existing_list[int(r.result_rank)-1] = True
+
+        if idx%6 == 5:
+            if True in pd.isnull(test_input_features_part):
+                continue
+            if False in rank_existing_list:
+                continue
+            race_numbers.append(r.race_num)
+            odds_rank_top3_list.append([r.rank1_lane, r.rank2_lane, r.rank3_lane])
+            odds_sanrentan_list.append(r.sanrentan)
+            odds_nirentan_list.append(r.nirentan)
+            test_input_features.append(test_input_features_part)
+            test_target_labels.append(test_target_labels_part)
+
+    test_input_features = np.array(test_input_features)
+    test_target_labels = np.array(test_target_labels)
+    odds_sanrentan = np.array(odds_sanrentan_list)
+    odds_nirentan = np.array(odds_nirentan_list)
+    odds_tanshou = np.array(odds_tanshou_list)
+    odds_rank_top3 = np.array(odds_rank_top3_list)
+
+    odds_dir = {"sanrentan": odds_sanrentan, "nirentan": odds_nirentan, "tanshou": odds_tanshou}
+
+    return race_numbers, test_input_features, test_target_labels, odds_rank_top3, odds_dir
+
+def load_train_data(year=2017, data_num=1000000000):
+    session.rollback()
+
+    res = session.query(
+        RaceResult.race_num.label("race_num"),
+        RaceInfo.is_race_no_flying.label("valid"),
+        cast(RacerInfo.racer_rank_int, Float).label("racer_rank_int"),
+        cast(RaceResult.rank, Float).label("result_rank"),
+        cast(RacerInfo.this_period_capability_index, Float).label("racer_capability_index"),
+        case([(RaceResult.pitout_lane == 1, cast(RacerInfo.first_course_first_arrive, Float) / cast(RacerInfo.first_course_entry_time, Float)),
+        (RaceResult.pitout_lane == 2, cast(RacerInfo.second_course_first_arrive, Float) / cast(RacerInfo.second_course_entry_time, Float)),
+        (RaceResult.pitout_lane == 3, cast(RacerInfo.third_course_first_arrive, Float) / cast(RacerInfo.third_course_entry_time, Float)),
+        (RaceResult.pitout_lane == 4, cast(RacerInfo.fourth_course_first_arrive, Float) / cast(RacerInfo.fourth_course_entry_time, Float)),
+        (RaceResult.pitout_lane == 5, cast(RacerInfo.fifth_course_first_arrive, Float) / cast(RacerInfo.fifth_course_entry_time, Float)),
+        (RaceResult.pitout_lane == 6, cast(RacerInfo.sixth_course_first_arrive, Float) / cast(RacerInfo.sixth_course_entry_time, Float)),]).label("win_rate"),
+        case([(RaceResult.pitout_lane == 1, RacerInfo.first_course_double_win_rate),
+        (RaceResult.pitout_lane == 2, RacerInfo.second_course_double_win_rate),
+        (RaceResult.pitout_lane == 3, RacerInfo.third_course_double_win_rate),
+        (RaceResult.pitout_lane == 4, RacerInfo.fourth_course_double_win_rate),
+        (RaceResult.pitout_lane == 5, RacerInfo.fifth_course_double_win_rate),
+        (RaceResult.pitout_lane == 6, RacerInfo.sixth_course_double_win_rate)]).label("double_win_rate")).join(
+            RacerInfo, RacerInfo.racer_id == RaceResult.racer_id).join(
+            RaceInfo, RaceInfo.race_num == RaceResult.race_num
+            ).filter(
+                RaceInfo.is_race_no_flying == 1,
+                RaceInfo.year == year,
+                RaceResult.year == year,
+                RacerInfo.year == year-1,
+                RacerInfo.period == 2
+            ).order_by(RaceResult.race_num.asc(), RaceResult.pitout_lane.asc()).all()
+
+    input_features = []
+    input_features_part = []
+    target_labels = []
+    target_labels_part = []
+
+
+    for idx, r in enumerate(res):
+        rank_vec = [0,0,0,0,0,0]
+        if (idx)%6 == 0:
+            input_features_part = []
+            target_labels_part = []
+
+            RANK1 = False
+            RANK2 = False
+            RANK3 = False
+            RANK4 = False
+            RANK5 = False
+            RANK6 = False
+
+        input_features_part += [r.racer_rank_int, r.racer_capability_index, r.win_rate, r.double_win_rate]
+        rank_vec[int(r.result_rank)-1] = 1
+        target_labels_part += rank_vec
+
+        if r.result_rank==1:
+            RANK1 = True
+        elif r.result_rank==2:
+            RANK2 = True
+        elif r.result_rank==3:
+            RANK3 = True
+        elif r.result_rank==4:
+            RANK4 = True
+        elif r.result_rank==5:
+            RANK5 = True
+        elif r.result_rank==6:
+            RANK6 = True
+
+        if idx%6 == 5:
+            if True in pd.isnull(input_features_part):
+                continue
+            if not(RANK1 and RANK2 and RANK3 and RANK4 and RANK5 and RANK6):
+                continue
+
+            input_features.append(input_features_part)
+            target_labels.append(target_labels_part)
+
+    input_features = np.array(input_features)
+    target_labels = np.array(target_labels)
+
+    return input_features, target_labels

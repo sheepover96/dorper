@@ -17,7 +17,7 @@ session.rollback()
 
 # %%
 # load train data
-input_feature_list, target_list, odds_list = load_data(2016, data_num=1600)
+input_feature_list, target_list, odds_list = load_data(2016)
 
 # %%
 from sklearn.ensemble import RandomForestRegressor
