@@ -63,6 +63,26 @@ class RaceResult(Base):
     #def __repr__(self):
     #    return "<Student(id='%s', name='%s', score='%s')>" % (self.id, self.name, self.score)
 
+class RaceResultGrouped(Base):
+    __tablename__ = 'race_result_grouped'
+
+    id = Column(Integer, primary_key=True)
+    year = Column(Integer)
+    race_num = Column(Integer)
+
+    lane1_racer_id = Column(Integer)
+    lane2_racer_id = Column(Integer)
+    lane3_racer_id = Column(Integer)
+    lane4_racer_id = Column(Integer)
+    lane5_racer_id = Column(Integer)
+    lane6_racer_id = Column(Integer)
+
+    lane1_result_rank = Column(Integer)
+    lane2_result_rank = Column(Integer)
+    lane3_result_rank = Column(Integer)
+    lane4_result_rank = Column(Integer)
+    lane5_result_rank = Column(Integer)
+    lane6_result_rank = Column(Integer)
 
 class RacerInfo(Base):
     __tablename__ = 'racer_info'

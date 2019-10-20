@@ -78,7 +78,7 @@ def main():
             shinnyu=shinnyu, start_timing=start_timing, race_time=race_time, date=date, year=year))
     session.add_all(race_result_list)
     session.commit()
-    
+
 
 if __name__ == '__main__':
     main()
