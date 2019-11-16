@@ -5,18 +5,23 @@ import pandas as pd
 from models import Base, RaceResult, RacerInfo, RaceOdds, RaceInfo
 
 from setting import session
-from utils.data import load_train_data, load_test_data
+from utils.data import get_target_race_nums, get_feature_race_nums, load_training_data
 import utils.income_metrics as icmtr
 
 import matplotlib.pyplot as plt
 
-
 #%%
-# main
-input_features, target_labels = load_train_data()
+
+target_race_num_list_feature = get_feature_race_nums()
+target_race_num_list_target = get_target_race_nums()
+target_race_num_list = list(set(target_race_num_list_feature) & set(target_race_num_list_target))
+input_features, target_labels = load_training_data(target_race_num_list)
+
 null_idx_arr = pd.isnull(input_features)
 null_idx = [True in i for i in null_idx_arr]
 notnull_dx = [not i for i in null_idx]
+print(input_features.shape)
+print(target_labels.shape)
 input_features = input_features[notnull_dx]
 target_labels = target_labels[notnull_dx]
 

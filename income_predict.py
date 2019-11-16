@@ -26,10 +26,8 @@ kfold = KFold(n_splits=4)
 for train_idxs, val_idxs in kfold.split(input_feature_list):
     train_feature = [input_feature_list[train_idx] for train_idx in train_idxs]
     train_feature_np = np.array(train_feature)
-    print(train_feature_np.shape)
     train_target = [target_list[train_idx] for train_idx in train_idxs]
     train_target_np = np.array(train_target)
-    print(train_target_np.shape)
 
     val_feature = [input_feature_list[val_idx] for val_idx in val_idxs]
     val_feature_np = np.array(val_feature)
