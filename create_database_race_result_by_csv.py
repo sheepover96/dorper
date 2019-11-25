@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 import pandas as pd
 
 import re, datetime
-from setting import session
+from utils.setting import session
 from models import Base, RaceResult, RaceInfo
 
 def main():

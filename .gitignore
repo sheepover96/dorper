@@ -7,3 +7,4 @@ rep
 *.csv
 geckodriver.log
 __pycache__
+_DS_Store

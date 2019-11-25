@@ -9,7 +9,7 @@ import xgboost as xgb
 import numpy as np
 
 from models import RaceResult, RacerInfo, RaceInfo
-from setting import session
+from utils.setting import session
 
 rank_dic = {1:150, 2:100, 3:50, 4:0}
 

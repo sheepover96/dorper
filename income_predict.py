@@ -4,12 +4,11 @@ from sqlalchemy.sql import text
 from sklearn.model_selection import KFold
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
-import xgboost as xgb
 
 import numpy as np
 
 from models import RaceResult, RacerInfo, RaceInfo
-from setting import session
+from utils.setting import session
 from utils.data import load_data
 
 # %%

@@ -3,7 +3,7 @@
 from sqlalchemy.sql import text
 
 from models import RaceResult, RacerInfo, RaceInfo, RaceOdds
-from setting import session
+from utils.setting import session
 
 year = 2014
 
@@ -49,7 +49,7 @@ plt.savefig('imgs/pitoutlane_to_rank.png')
 
 #%%
 
-# when racer in except 1st lane win? 
+# when racer in except 1st lane win?
 
 wind_direction_dic = {}
 wind_strength_dic = {}
@@ -88,7 +88,7 @@ for race_result, race_info in race_result_second_lane_rank1.all():
 #%%
 # 複勝率の調査
 import matplotlib.pyplot as plt
-from sqlalchemy import or_, and_ 
+from sqlalchemy import or_, and_
 nrace = race_result_with_info.filter(RaceResult.pitout_lane==1).count()
 count = 0
 race_num_list = []
@@ -101,7 +101,7 @@ print(count/nrace)
 
 #%%
 # 二連単率の調査
-from sqlalchemy import or_, and_ 
+from sqlalchemy import or_, and_
 nrace = race_result_with_info.filter(RaceResult.pitout_lane==1).count()
 count = 0
 race_num_dic = {}

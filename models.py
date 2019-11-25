@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, Float, String, Date, ForeignKey, Boolean
+from sqlalchemy import Index, Column, Integer, Float, String, Date, ForeignKey, Boolean
 
 Base = declarative_base()
 
@@ -252,3 +252,5 @@ class RacerInfo(Base):
     no_course_k1_times = Column(Integer)
 
     birth_place = Column(String(10))
+
+racer_info_index_all = Index('racer_info_index', RacerInfo.id, RacerInfo.year, RacerInfo.period)

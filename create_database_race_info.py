@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, distinct, or_
 from sqlalchemy.orm import sessionmaker
 import pandas as pd
 
-from setting import session
+from utils.setting import session
 from models import Base, RaceResult, RaceInfo
 
 def main():
@@ -57,7 +57,7 @@ def main():
 
     session.add_all(race_info_list)
     session.commit()
-    
+
 
 if __name__ == '__main__':
     main()
