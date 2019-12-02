@@ -13,7 +13,7 @@ class RacerInfoWinRatePeriod(BaseFeature):
     feature_type = 'group'
     feature_description = 'group'
 
-    def ___init__(self, race_info_list, year):
+    def __init__(self, race_info_list, year):
         super().__init__()
         self.race_info_list = race_info_list
         self.year = year

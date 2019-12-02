@@ -7,7 +7,7 @@ class BaseFeature():
     feature_name = ''
     feature_type = ''
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         pass
 
     def extract_feature(self):

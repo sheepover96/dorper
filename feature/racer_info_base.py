@@ -12,7 +12,7 @@ class RacerInfoBase(BaseFeature):
     feature_name = 'racer_info_base'
     feature_type = 'group'
 
-    def ___init__(self, race_info_list, year):
+    def __init__(self, race_info_list, year):
         super().__init__()
         self.race_info_list = race_info_list
         self.year = year
