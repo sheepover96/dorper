@@ -3,9 +3,9 @@ import numpy as np
 
 
 class Join:
-    feature_name = ''
+    feature_name = 'join'
 
-    def __init__(self, id_list, group_features_dic_list, single_feature_dic_list):
+    def __init__(self, id_list=None, group_features_dic_list=None, single_feature_dic_list=None):
         self.id_list = id_list
         self.group_features_dic_list = group_features_dic_list
         self.single_features_dic_list = single_feature_dic_list
@@ -14,17 +14,23 @@ class Join:
     def join_feature(self):
         self.feature_list = []
         for _id in self.id_list:
-            group_feature_list = []
-            for group_features_dic in self.group_features_dic_list:
-                group_feature_list.append(group_features_dic[_id])
-            feature_flatten = np.stack(group_feature_list, axis=1).reshape(1,-1)
+            if self.group_features_dic_list:
+                group_feature_list = []
+                for group_features_dic in self.group_features_dic_list:
+                    group_feature_list.append(group_features_dic[_id])
+                feature_concatenated = np.stack(group_feature_list, axis=1).reshape(1,-1)
 
-            single_feature_list = []
-            for single_features_dic in self.single_features_dic_list:
-                single_feature_list.append(single_features_dic[_id])
-            feature_concatenated = np.concatenate([feature_flatten, np.array(single_feature_list)])
+            if self.single_features_dic_list:
+                single_feature_list = []
+                for single_features_dic in self.single_features_dic_list:
+                    single_feature_list.append(single_features_dic[_id])
+                feature_concatenated = np.concatenate([feature_concatenated, np.array(single_feature_list)])
 
-            self.feature_list.append(feature_concatenated)
+            if self.group_features_dic_list or self.single_features_dic_list:
+                self.feature_list.append(feature_concatenated)
+
+    def get_feature_list(self):
+        return self.feature_list
 
     def save(self, file_name=None):
         save_file_name = self.feature_name + '.pkl'
