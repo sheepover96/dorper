@@ -29,3 +29,5 @@ class BaseFeature():
         with open(load_file_name, 'rb') as f:
             tmp_obj = pickle.load(f)
             self.__dict__.update(tmp_obj)
+
+#hogehoge
