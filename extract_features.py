@@ -31,4 +31,3 @@ from feature.racer_win_rate_year import RacerInfoWinRateYear
 racer_win_rate_period = RacerInfoWinRateYear(race_info_list=valid_race_result_list_17, year=2017)
 racer_win_rate_period.extract_feature()
 racer_win_rate_period.save('./feature_pkls/racer_win_rate_year_2017.pkl')
-

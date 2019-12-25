@@ -27,7 +27,7 @@ class Join:
                 feature_concatenated = np.concatenate([feature_concatenated, np.array(single_feature_list)])
 
             if self.group_features_dic_list or self.single_features_dic_list:
-                self.feature_list.append(feature_concatenated)
+                self.feature_list.append(feature_concatenated[0])
 
     def get_feature_list(self):
         return self.feature_list
