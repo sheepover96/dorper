@@ -10,6 +10,10 @@ valid_race_result_list_17 = session.query(RaceInfo, RaceResultGrouped)\
     .join(RaceInfo, RaceInfo.race_num==RaceResultGrouped.race_num)\
     .filter(RaceInfo.year==RaceResultGrouped.year, RaceInfo.year==2017,\
     RaceInfo.is_race_no_flying==1, RaceInfo.is_race_times_record_valid==1).all()
+valid_race_result_list_18 = session.query(RaceInfo, RaceResultGrouped)\
+    .join(RaceInfo, RaceInfo.race_num==RaceResultGrouped.race_num)\
+    .filter(RaceInfo.year==RaceResultGrouped.year, RaceInfo.year==2018,\
+    RaceInfo.is_race_no_flying==1, RaceInfo.is_race_times_record_valid==1).all()
 # valid_race_info_list_17 = session.query(RaceInfo, RaceResultGrouped)\
 #     .filter(RaceInfo.year==2017, RaceInfo.is_race_no_flying==1, RaceInfo.is_race_times_record_valid==1).all()
 
@@ -32,3 +36,10 @@ racer_win_rate_period = RacerInfoWinRateYear(race_info_list=valid_race_result_li
 racer_win_rate_period.extract_feature()
 racer_win_rate_period.save('./feature_pkls/racer_win_rate_year_2017.pkl')
 
+#%%
+from feature.race_odds_year_validated import RaceOddsYearValidated
+race_odds_year_validated18 = RaceOddsYearValidated(race_info_list=valid_race_result_list_18, year=2018)
+race_odds_year_validated18.extract_feature()
+race_odds_year_validated18.save('./feature_pkls/race_odds_year_validated_2018.pkl')
+
+# %%

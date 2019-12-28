@@ -1,5 +1,6 @@
 from itertools import permutations, combinations
 
+# 各選手のレーンごとの予想勝率を元に収益を計算
 def get_lane_win_prob(racer_win_prob, lane, rank):
     return racer_win_prob[lane*6+rank]
 

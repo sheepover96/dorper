@@ -4,7 +4,7 @@ from sqlalchemy.sql import text
 from sqlalchemy import case, cast, func, Float
 
 from models import RaceResult, RacerInfo, RaceOdds, RaceInfo, RaceResultGrouped
-from setting import session
+from .setting import session
 from collections import namedtuple
 
 rank_dic = {1:150, 2:100, 3:50, 4:0}
