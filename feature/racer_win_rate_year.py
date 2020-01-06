@@ -21,12 +21,15 @@ class RacerInfoWinRateYear(BaseFeature):
 
     def _calc_win_rate(self, racer_id, lane):
         race_result_tmp = session.query(RaceResult).filter(RaceResult.racer_id==racer_id,\
-            RaceResult.year==self.year, RaceResult.pitout_lane==lane)
+            RaceResult.year==self.year-1, RaceResult.pitout_lane==lane)
 
         nrace = race_result_tmp.count()
         nwon_race_on_lane = race_result_tmp.filter(RaceResult.rank==1).count()
 
-        return nwon_race_on_lane / nrace
+        if nrace != 0:
+            return nwon_race_on_lane / nrace
+        else:
+            return None
 
     def extract_feature(self):
         self.data_dic = {}
